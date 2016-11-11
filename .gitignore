@@ -7,3 +7,6 @@
 /pkg/
 /spec/reports/
 /tmp/
+
+# CodeClimate Coverage Reporter
+codeclimate-coverage-reporter.sh

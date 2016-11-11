@@ -1,11 +1,12 @@
+# frozen_string_literal: true
 require 'open-uri'
 require 'nokogiri'
 require 'bigdecimal'
 
 module BloombergCurrency
-  module Scraper
+  module API
+    # Implements site scrapping
     class Site
-
       def quote(currency_one, currency_two)
         BloombergCurrency::Models::Quote.new(process(currency_one, currency_two))
       end
@@ -18,7 +19,7 @@ module BloombergCurrency
       end
 
       def load_site(currency_one, currency_two)
-        file = open("#{BloombergCurrency::Scraper::Host::URL}#{currency_one}#{currency_two}:CUR")
+        file = open("#{BloombergCurrency::API::Host::URL}#{currency_one}#{currency_two}:CUR")
         Nokogiri::HTML(file)
       end
 
@@ -33,24 +34,22 @@ module BloombergCurrency
         price_element            = price_container.xpath("//div[@class='price']")
         price_datetime_element   = price_container.xpath("//div[@class='price-datetime']")
 
-        price                    = BigDecimal.new(price_element.text.strip.gsub(',', ''))
+        price                    = BigDecimal.new(price_element.text.strip.tr(',', ''))
         price_datetime           = DateTime.strptime(price_datetime_element.text.strip, 'As of %H:%M %p %z %m/%d/%Y')
         quote_details_hash       = quote_details(detailed_quote_container)
 
-        {
-          price:             price,
-          price_datetime:    price_datetime,
-          quote_details:     quote_details_hash
-        }
+        { price: price, price_datetime: price_datetime, quote_details: quote_details_hash }
       end
 
       def quote_details(container)
-        detail_elements = container.xpath("//div[@class='data-table data-table_detailed']").xpath("//div[contains(@class, 'cell') and contains(@class, 'cell__mobile-basic')]")
+        detail_elements = container.xpath("//div[@class='data-table data-table_detailed']").xpath(
+          "//div[contains(@class, 'cell') and contains(@class, 'cell__mobile-basic')]"
+        )
 
         details_hash = {}
         details_matrix = detail_elements.map { |a| a.text.strip.split('   ') }
         details_matrix.each do |key_value_array|
-          details_hash[key_value_array[0].downcase.gsub(' ', '_').to_sym] = key_value_array[1]
+          details_hash[key_value_array[0].downcase.tr(' ', '_').to_sym] = key_value_array[1]
         end
         details_hash
       end

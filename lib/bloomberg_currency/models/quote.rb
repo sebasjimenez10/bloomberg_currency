@@ -1,5 +1,7 @@
+# frozen_string_literal: true
 module BloombergCurrency
   module Models
+    # Quote Information
     class Quote
       attr_accessor :price, :price_datetime, :quote_details
       def initialize(hash)
