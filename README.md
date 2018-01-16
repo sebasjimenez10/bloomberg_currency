@@ -33,16 +33,24 @@ quote = BC::Quote.new('USD', 'EUR')
 Then the quote object offers a few accessor methods:
 
 `price`: Returns a float price
+
 `datetime`: Returns the date time when the price was captured
+
 `detail`: Returns an object of the class BC::QuoteDetail which encapsulate the details of the quote. Will be explained later on.
+
 `available?`: Return true or false if the exchange is available or not.
+
 
 The `BC::QuoteDetail` class offers the following methods:
 
 `open`: Returns the value in which the currency opened.
+
 `day_range`: Returns the day range up until the moment the quote is generated.
+
 `previous_close`: Returns the value where the exchange closed last day.
+
 `last_52_weeks_range`: Returns the range od the last 52 weeks.
+
 `ytd_return`: Returns the YTD percentage.
 
 
