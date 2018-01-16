@@ -1,24 +1,28 @@
 # frozen_string_literal: true
 require 'spec_helper'
 
-describe BloombergCurrency::Models::Quote do
+describe BC::Quote do
   subject do
-    BloombergCurrency::Models::Quote.new(
-      price: BigDecimal.new('2900'),
-      price_datetime: Time.now.to_i,
-      quote_details: {}
-    )
+    BC::Quote.new('USD', 'COP')
   end
 
   it 'should define price' do
     expect(subject.respond_to?(:price)).to be true
   end
 
-  it 'should define price_datetime' do
-    expect(subject.respond_to?(:price_datetime)).to be true
+  it 'should define datetime' do
+    expect(subject.respond_to?(:datetime)).to be true
   end
 
-  it 'should define quote_details' do
-    expect(subject.respond_to?(:quote_details)).to be true
+  it 'should define detail' do
+    expect(subject.respond_to?(:detail)).to be true
+  end
+
+  it 'should define available?' do
+    expect(subject.respond_to?(:available?)).to be true
+  end
+
+  it 'should return true when the exchange is valid' do
+    expect(subject.send(:available?)).to be true
   end
 end

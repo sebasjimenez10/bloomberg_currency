@@ -2,8 +2,9 @@
 require 'bloomberg_currency/version'
 require 'bloomberg_currency/api/site'
 require 'bloomberg_currency/api/host'
-require 'bloomberg_currency/models/quote'
+require 'bloomberg_currency/quote'
+require 'bloomberg_currency/quote_detail'
 
 # Main Gem Module
-module BloombergCurrency
+module BC
 end
