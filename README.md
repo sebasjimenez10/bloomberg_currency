@@ -2,7 +2,7 @@
 
 [![Build Status](https://travis-ci.org/sebasjimenez10/bloomberg_currency.svg?branch=master)](https://travis-ci.org/sebasjimenez10/bloomberg_currency) [![Code Climate](https://codeclimate.com/github/sebasjimenez10/bloomberg_currency/badges/gpa.svg)](https://codeclimate.com/github/sebasjimenez10/bloomberg_currency) [![Test Coverage](https://codeclimate.com/github/sebasjimenez10/bloomberg_currency/badges/coverage.svg)](https://codeclimate.com/github/sebasjimenez10/bloomberg_currency/coverage) [![Issue Count](https://codeclimate.com/github/sebasjimenez10/bloomberg_currency/badges/issue_count.svg)](https://codeclimate.com/github/sebasjimenez10/bloomberg_currency)
 
-Bloomberg Currency provides an easy-to-use API to pull currency exchange rates from the Bloomberg sites. If you would like to test out this gem before including it into your project, feel free to clone it, bundle it and run `bin/console` for an interactive prompt.
+Bloomberg Currency provides an easy-to-use API to pull currency exchange rates from the Bloomberg site. If you would like to test out this gem before including it into your project, feel free to clone it, bundle it and run `bin/console` for an interactive prompt.
 
 ## Installation
 
@@ -22,19 +22,52 @@ Or install it yourself as:
 
 ## Usage
 
-You just basically need to create a new instance of the Site object and then call the `quote` method on it, passing the `<currency_from>` and `<currency_to>` as parameters. Like this:
+NOTE: From version `0.1.0` to `1.0.0` there are mayor breaking changes. Please make sure you read the docs before installing/upgrading to the newest version.
+
+The gem usability has been improved in version 1.0. Now you only need to create an instance of the class `BC::Quote`, passing the two currencies you'd like to get information about, like this:
 
 ```
-site = BloombergCurrency::API::Site.new
-site.quote 'USD', 'EUR'
-# => => #<BloombergCurrency::Models::Quote:0x007fdb95161098 @price=#<BigDecimal:7fdb95189930,'0.921E0',9(18)>, @price_datetime=#<DateTime: 2016-11-11T16:47:00-05:00 ((2457704j,78420s,0n),-18000s,2299161j)>, @quote_details={:open=>"0.9180", :day_range=>"0.9156 - 0.9233", :previous_close=>"0.9180", :"52wk_range"=>"0.8612 - 0.9496", :ytd_return=>"0.10%"}>
+quote = BC::Quote.new('USD', 'EUR')
 ```
-As you could notice it will return a Quote object. This object contains three main attributes: `price`, `price_datetime` and `quote_details`.
-Out of those three attributes, the `quote_details` attribute contains a hash, here's an example: `{:open=>"0.9180", :day_range=>"0.9156 - 0.9233", :previous_close=>"0.9180", :"52wk_range"=>"0.8612 - 0.9496", :ytd_return=>"0.10%"}`
+
+Then the quote object offers a few accessor methods:
+
+`price`: Returns a float price
+`datetime`: Returns the date time when the price was captured
+`detail`: Returns an object of the class BC::QuoteDetail which encapsulate the details of the quote. Will be explained later on.
+`available?`: Return true or false if the exchange is available or not.
+
+The `BC::QuoteDetail` class offers the following methods:
+
+`open`: Returns the value in which the currency opened.
+`day_range`: Returns the day range up until the moment the quote is generated.
+`previous_close`: Returns the value where the exchange closed last day.
+`last_52_weeks_range`: Returns the range od the last 52 weeks.
+`ytd_return`: Returns the YTD percentage.
+
+## Examples
+
+Getting information about the USD and EUR exchange:
+
+```
+quote = BC::Quote.new('USD', 'EUR')
+quote.price
+=> 0.8147
+
+quote.datetime
+=> #<DateTime: 2018-01-16T14:35:00-05:00 ((2458135j,70500s,0n),-18000s,2299161j)>
+
+quote.detail
+=> #<BC::QuoteDetail:0x007faadd9fb868 @open=0.8154, @day_range=0.8143..0.8199, @previous_close=0.8154, @last_52_weeks_range=0.8133..0.9529, @ytd_return=-1.91>
+
+quote.available?
+=> true
+
+```
 
 ## Development
 
-After checking out the repo, run `bin/setup` to install dependencies. Then, run `rake spec` to run the tests. You can also run `bin/console` for an interactive prompt that will allow you to experiment.
+After checking out the repo, run `bin/setup` to install dependencies. Then, run `rspec spec` to run the tests. You can also run `bin/console` for an interactive prompt that will allow you to experiment.
 
 To install this gem onto your local machine, run `bundle exec rake install`.
 
