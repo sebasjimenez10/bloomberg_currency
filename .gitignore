@@ -13,3 +13,5 @@ codeclimate-coverage-reporter.sh
 
 .DS_Store
 */**/.DS_Store
+
+.byebug_history
