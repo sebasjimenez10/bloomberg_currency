@@ -1,4 +1,5 @@
 # frozen_string_literal: true
+
 require 'spec_helper'
 
 describe BC::API::Site do
@@ -11,7 +12,7 @@ describe BC::API::Site do
     expect(subject.methods.include?(:quote)).to be true
   end
 
-  describe '#quote' do
+  describe '::quote' do
     context 'when stubbing load_site' do
       before do
         allow(subject).to receive(:load_site).and_return(load_mock_site)

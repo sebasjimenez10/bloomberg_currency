@@ -22,37 +22,33 @@ Or install it yourself as:
 
 ## Usage
 
-NOTE: From version `0.1.0` to `1.0.0` there are mayor breaking changes. Please make sure you read the docs before installing/upgrading to the newest version.
+*NOTE*: From version `0.1.0` to `1.0.0` there are mayor breaking changes. Please make sure you read the docs before installing/upgrading to the newest version.
 
 The gem usability has been improved in version 1.0. Now you only need to create an instance of the class `BC::Quote`, passing the two currencies you'd like to get information about, like this:
 
 ```
 quote = BC::Quote.new('USD', 'EUR')
+=> #<BC::Quote:0x007fe92c297670 @price=0.8156, @datetime=#<DateTime: 2018-01-16T17:13:00-05:00 ((2458135j,79980s,0n),-18000s,2299161j)>, @detail=#<BC::QuoteDetail:0x007fe92c3ae8d8 @open=0.8157, @day_range=0.8156..0.8159, @previous_close=0.8157, @last_52_weeks_range=0.8133..0.9529, @ytd_return=-2.14>, @available=true>
 ```
 
 Then the quote object offers a few accessor methods:
 
-`price`: Returns a float price
-
-`datetime`: Returns the date time when the price was captured
-
-`detail`: Returns an object of the class BC::QuoteDetail which encapsulate the details of the quote. Will be explained later on.
-
-`available?`: Return true or false if the exchange is available or not.
+- `price`: Returns a float price
+- `datetime`: Returns the date time when the price was captured
+- `detail`: Returns an object of the class BC::QuoteDetail which encapsulate the details of the quote. Will be explained later on.
+- `available?`: Return true or false if the exchange is available or not.
 
 
 The `BC::QuoteDetail` class offers the following methods:
 
-`open`: Returns the value in which the currency opened.
+- `open`: Returns the value in which the currency opened.
+- `day_range`: Returns the day range up until the moment the quote is generated.
+- `previous_close`: Returns the value where the exchange closed last day.
+- `last_52_weeks_range`: Returns the range od the last 52 weeks.
+- `ytd_return`: Returns the YTD percentage.
 
-`day_range`: Returns the day range up until the moment the quote is generated.
 
-`previous_close`: Returns the value where the exchange closed last day.
-
-`last_52_weeks_range`: Returns the range od the last 52 weeks.
-
-`ytd_return`: Returns the YTD percentage.
-
+*NOTE*: When the some of the markets close, the `open` and `day_range` attributes on the Bloomberg site aren't displayed. So those attributes may not be present if the market is closed. But the quote may still be available.
 
 ## Examples
 

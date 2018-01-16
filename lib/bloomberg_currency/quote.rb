@@ -1,4 +1,5 @@
 # frozen_string_literal: true
+
 module BC
   # Quote Information Class
   class Quote

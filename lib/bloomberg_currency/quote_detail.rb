@@ -1,4 +1,5 @@
 # frozen_string_literal: true
+
 module BC
   # Quote Details Class
   class QuoteDetail
@@ -15,11 +16,13 @@ module BC
     private
 
     def process_range(range)
+      return unless range
       edges = range.tr(',', '').strip.split('-')
       edges[0].to_f..edges[1].to_f
     end
 
     def process_float(float)
+      return unless float
       float.tr(',', '').to_f
     end
   end
