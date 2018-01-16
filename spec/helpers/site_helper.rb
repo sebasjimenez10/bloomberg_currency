@@ -1,4 +1,5 @@
 # frozen_string_literal: true
+
 # Site Helper.
 # Implements opening a static Bloomberg website and returns a parsed HTML object
 module SiteHelper
