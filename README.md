@@ -45,6 +45,7 @@ The `BC::QuoteDetail` class offers the following methods:
 `last_52_weeks_range`: Returns the range od the last 52 weeks.
 `ytd_return`: Returns the YTD percentage.
 
+
 ## Examples
 
 Getting information about the USD and EUR exchange:

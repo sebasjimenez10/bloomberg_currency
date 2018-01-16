@@ -38,7 +38,7 @@ Gem::Specification.new do |spec|
   spec.add_development_dependency 'rspec', '~> 3.0'
   spec.add_development_dependency 'simplecov', '~> 0.11'
   spec.add_development_dependency 'rubocop', '~> 0.49.0'
-  spec.add_development_dependency 'codeclimate-test-reporter', '~> 1.0.0'
+  spec.add_development_dependency 'codeclimate-test-reporter', '~> 1.0', '>= 1.0.0'
 
   spec.add_runtime_dependency 'nokogiri', '~> 1.6', '>= 1.6.8'
 end
