@@ -8,6 +8,7 @@ AllCops:
     - 'db/**/*'
     - 'config/**/*'
     - 'script/**/*'
+    - 'spec/**/*'
     - !ruby/regexp /old_and_unused\.rb$/
 
 Metrics/LineLength:
