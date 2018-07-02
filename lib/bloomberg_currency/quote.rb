@@ -14,7 +14,7 @@ module BC
     end
 
     def available?
-      available
+      !!available
     end
   end
 end
