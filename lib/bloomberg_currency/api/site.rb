@@ -21,7 +21,7 @@ module BC
           rescue OpenURI::HTTPError
             unavailable_quote
           end
-          parse(site) 
+          parse(site)
         end
 
         def load_site(currency_one, currency_two)
