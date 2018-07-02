@@ -16,19 +16,23 @@ module BC
         private
 
         def process(currency_one, currency_two)
-          site = load_site(currency_one, currency_two)
-          parse(site)
+          begin
+            site = load_site(currency_one, currency_two)
+          rescue OpenURI::HTTPError
+            unavailable_quote
+          end
+          parse(site) 
         end
 
         def load_site(currency_one, currency_two)
-          file = open("#{BC::API::Host::URL}#{currency_one}#{currency_two}:CUR")
+          file = open("#{BC::API::Host::BASE}#{BC::API::Host::PATH}#{currency_one}#{currency_two}:CUR")
           Nokogiri::HTML(file)
         end
 
         def parse(document)
           parse_quote(document)
         rescue
-          { price: nil, datetime: nil, detail: nil, available: false }
+          unavailable_quote
         end
 
         def parse_quote(document)
@@ -56,6 +60,10 @@ module BC
             details_hash[key_value_array[0].downcase.tr(' ', '_').to_sym] = key_value_array[1]
           end
           details_hash
+        end
+
+        def unavailable_quote
+          { price: nil, datetime: nil, detail: nil, available: false }
         end
       end
     end

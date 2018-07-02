@@ -3,7 +3,8 @@
 module BC
   module API
     class Host
-      URL = 'https://www.bloomberg.com/quote/'.freeze
+      BASE = 'https://www.bloomberg.com'.freeze
+      PATH = '/quote/'.freeze
     end
   end
 end
