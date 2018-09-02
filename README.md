@@ -2,7 +2,9 @@
 
 [![Build Status](https://travis-ci.org/sebasjimenez10/bloomberg_currency.svg?branch=master)](https://travis-ci.org/sebasjimenez10/bloomberg_currency) [![Code Climate](https://codeclimate.com/github/sebasjimenez10/bloomberg_currency/badges/gpa.svg)](https://codeclimate.com/github/sebasjimenez10/bloomberg_currency) [![Test Coverage](https://codeclimate.com/github/sebasjimenez10/bloomberg_currency/badges/coverage.svg)](https://codeclimate.com/github/sebasjimenez10/bloomberg_currency/coverage) [![Issue Count](https://codeclimate.com/github/sebasjimenez10/bloomberg_currency/badges/issue_count.svg)](https://codeclimate.com/github/sebasjimenez10/bloomberg_currency)
 
+
 Bloomberg Currency provides an easy-to-use API to pull currency exchange rates from the Bloomberg site. If you would like to test out this gem before including it into your project, feel free to clone it, bundle it and run `bin/console` for an interactive prompt.
+
 
 ## Installation
 
