@@ -1,6 +1,5 @@
 # frozen_string_literal: true
 
-require 'open-uri'
 require 'nokogiri'
 require 'bigdecimal'
 
@@ -18,15 +17,18 @@ module BC
         def process(currency_one, currency_two)
           begin
             site = load_site(currency_one, currency_two)
-          rescue OpenURI::HTTPError
+          rescue
             unavailable_quote
           end
           parse(site)
         end
 
         def load_site(currency_one, currency_two)
-          file = open("#{BC::API::Host::BASE}#{BC::API::Host::PATH}#{currency_one}#{currency_two}:CUR")
-          Nokogiri::HTML(file)
+          driver = Selenium::WebDriver.for(:phantomjs)
+          driver.get("#{BC::API::Host::BASE}#{BC::API::Host::PATH}#{currency_one}#{currency_two}:CUR")
+          source = driver.page_source
+          driver.quit
+          Nokogiri::HTML(source)
         end
 
         def parse(document)
@@ -36,10 +38,12 @@ module BC
         end
 
         def parse_quote(document)
-          price_container          = document.xpath("//div[contains(@class, 'price-container')]")
-          detailed_quote_container = document.xpath("//div[contains(@class, 'detailed-quote')]")
+          price_container          = document.xpath("//section[contains(@class, 'quotePageSnapshot')]")
+          main_content             = document.xpath("//div[contains(@class, 'pseudoMainContent')]")
+          right_content            = document.xpath("//div[contains(@class, 'pseudoRightRail')]")
+          detailed_quote_container = document.xpath("//div[contains(@class, 'details*')]")
 
-          price_element            = price_container.xpath("//div[@class='price']")
+          price_element            = price_container.xpath("//div[@class='price*']")
           price_datetime_element   = price_container.xpath("//div[@class='price-datetime']")
 
           price                    = price_element.text.strip.tr(',', '').to_f
