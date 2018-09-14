@@ -12,6 +12,7 @@ Add this line to your application's Gemfile:
 gem 'bloomberg_currency'
 ```
 
+
 And then execute:
 
     $ bundle
