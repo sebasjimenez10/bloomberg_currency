@@ -4,6 +4,7 @@
 
 Bloomberg Currency provides an easy-to-use API to pull currency exchange rates from the Bloomberg site. If you would like to test out this gem before including it into your project, feel free to clone it, bundle it and run `bin/console` for an interactive prompt.
 
+
 ## Installation
 
 Add this line to your application's Gemfile:
