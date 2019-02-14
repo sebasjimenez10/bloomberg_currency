@@ -4,6 +4,7 @@
 
 Bloomberg Currency provides an easy-to-use API to pull currency exchange rates from the Bloomberg site. If you would like to test out this gem before including it into your project, feel free to clone it, bundle it and run `bin/console` for an interactive prompt.
 
+
 ## Installation
 
 Add this line to your application's Gemfile:
@@ -19,6 +20,7 @@ And then execute:
 Or install it yourself as:
 
     $ gem install bloomberg_currency
+
 
 ## Usage
 
@@ -50,6 +52,7 @@ The `BC::QuoteDetail` class offers the following methods:
 
 *NOTE*: When the some of the markets close, the `open` and `day_range` attributes on the Bloomberg site aren't displayed. So those attributes may not be present if the market is closed. But the quote may still be available.
 
+
 ## Examples
 
 Getting information about the USD and EUR exchange:
@@ -70,6 +73,7 @@ quote.available?
 
 ```
 
+
 ## Development
 
 After checking out the repo, run `bin/setup` to install dependencies. Then, run `rspec spec` to run the tests. You can also run `bin/console` for an interactive prompt that will allow you to experiment.
@@ -79,6 +83,7 @@ To install this gem onto your local machine, run `bundle exec rake install`.
 If you would like to contribute please fork the repository, make your changes and create a PR.
 
 To release a new version, update the version number in `version.rb`, and then run `bundle exec rake release`, which will create a git tag for the version, push git commits and tags, and push the `.gem` file to [rubygems.org](https://rubygems.org).
+
 
 ## Contributing
 
