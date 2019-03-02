@@ -3,3 +3,4 @@ New line on new file
 another line on new file
 another line on new fil e 3
 Test
+Add new line
