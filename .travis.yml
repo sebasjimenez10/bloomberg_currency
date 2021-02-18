@@ -3,4 +3,6 @@ language: ruby
 rvm:
   - 2.6.5
 before_install: gem install bundler -v 1.17.2
-before_script: rubocop
+before_script:
+  - rubocop
+  - ./codeclimate-coverage-reporter.sh
