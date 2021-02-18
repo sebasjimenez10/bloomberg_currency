@@ -1,9 +1,5 @@
 # frozen_string_literal: true
 
-require 'faraday'
-require 'nokogiri'
-require 'bigdecimal'
-
 module BC
   module API
     # Implements site scrapping
@@ -83,9 +79,9 @@ module BC
 
         def calculate_datetime(datetime_str)
           if datetime_str.index(':')
-            DateTime.strptime(datetime_str, 'As of %H:%M %p %z %m/%d/%Y').to_s
+            ::DateTime.strptime(datetime_str, 'As of %H:%M %p %z %m/%d/%Y')
           else
-            DateTime.strptime(datetime_str, 'As of %m/%d/%Y').to_date.to_s
+            ::DateTime.strptime(datetime_str, 'As of %m/%d/%Y').to_date
           end
         rescue
           ''
