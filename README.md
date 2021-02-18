@@ -24,11 +24,13 @@ Or install it yourself as:
 
 *NOTE*: From version `0.1.0` to `1.0.0` there are mayor breaking changes. Please make sure you read the docs before installing/upgrading to the newest version.
 
-The gem usability has been improved in version 1.0. Now you only need to create an instance of the class `BC::Quote`, passing the two currencies you'd like to get information about, like this:
+The gem usability has been improved in version 1.0.0. Now you only need to create an instance of the class `BC::Quote`, passing the two currencies you'd like to get information about, like this:
 
 ```
 quote = BC::Quote.new('USD', 'EUR')
-=> #<BC::Quote:0x007fe92c297670 @price=0.8156, @datetime=#<DateTime: 2018-01-16T17:13:00-05:00 ((2458135j,79980s,0n),-18000s,2299161j)>, @detail=#<BC::QuoteDetail:0x007fe92c3ae8d8 @open=0.8157, @day_range=0.8156..0.8159, @previous_close=0.8157, @last_52_weeks_range=0.8133..0.9529, @ytd_return=-2.14>, @available=true>
+=> #<BC::Quote:0x00007fd5858f1620 @price=0.8303, @datetime="", @detail=#<BC::QuoteDetail:0x00007fd583330238 @open=0.8307, @day_range=0.8299..0.8307, @previous_close=0.8306, @last_52_weeks_range=0.8098..0.94, @ytd_return=1.43>, @available=true>
+quote.detail
+=> #<BC::QuoteDetail:0x00007fd583330238 @open=0.8307, @day_range=0.8299..0.8307, @previous_close=0.8306, @last_52_weeks_range=0.8098..0.94, @ytd_return=1.43>
 ```
 
 Then the quote object offers a few accessor methods:

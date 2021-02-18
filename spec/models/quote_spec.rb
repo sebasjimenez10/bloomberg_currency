@@ -20,7 +20,7 @@ describe BC::Quote, :vcr, type: :request do
   end
 
   it 'returns the expected datetime' do
-    expect(subject.datetime).to eq "2021-02-17"
+    expect(subject.datetime.to_date.to_s).to eq "2021-02-17"
   end
 
   it 'defines detail' do

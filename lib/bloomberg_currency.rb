@@ -1,5 +1,10 @@
 # frozen_string_literal: true
 
+require 'faraday'
+require 'nokogiri'
+require 'bigdecimal'
+require 'date'
+
 require 'bloomberg_currency/version'
 require 'bloomberg_currency/api'
 require 'bloomberg_currency/api/site'
