@@ -4,6 +4,7 @@ module BC
   # Quote Information Class
   class Quote
     attr_accessor :price, :datetime, :detail, :available
+
     def initialize(currency_one, currency_two)
       result     = BC::API::Site.quote(currency_one, currency_two)
 
