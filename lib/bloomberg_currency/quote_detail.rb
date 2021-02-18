@@ -9,7 +9,7 @@ module BC
       @open                = process_float(attributes[:open])
       @day_range           = process_range(attributes[:day_range])
       @previous_close      = process_float(attributes[:previous_close])
-      @last_52_weeks_range = process_range(attributes[:"52wk_range"])
+      @last_52_weeks_range = process_range(attributes[:range_52_wks])
       @ytd_return          = process_float(attributes[:ytd_return])
     end
 
