@@ -44,5 +44,5 @@ Gem::Specification.new do |spec|
   spec.add_development_dependency 'webmock', '~> 3.12.0'
 
   spec.add_runtime_dependency 'nokogiri', '~> 1.6', '>= 1.6.8'
-  spec.add_runtime_dependency 'faraday', '~> 0.9.2'
+  spec.add_runtime_dependency 'faraday', '>= 0.9.2', '< 1.4.0'
 end
