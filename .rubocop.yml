@@ -1,6 +1,7 @@
 inherit_from: .rubocop_todo.yml
 
 AllCops:
+  NewCops: enable
   Include:
     - '**/Rakefile'
     - '**/config.ru'
@@ -10,6 +11,7 @@ AllCops:
     - 'config/**/*'
     - 'script/**/*'
     - 'spec/**/*'
+    - 'bin/**/*'
     - !ruby/regexp /old_and_unused\.rb$/
 
 Metrics/LineLength:
