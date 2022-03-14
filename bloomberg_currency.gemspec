@@ -40,7 +40,7 @@ Gem::Specification.new do |spec|
   spec.add_development_dependency 'rubocop', '~> 1.18.4'
   spec.add_development_dependency 'codeclimate-test-reporter', '~> 1.0', '>= 1.0.0'
   spec.add_development_dependency 'pry-byebug', '~> 3.9.0'
-  spec.add_development_dependency 'vcr', '~> 6.0.0'
+  spec.add_development_dependency 'vcr', '~> 6.1.0'
   spec.add_development_dependency 'webmock', '~> 3.13.0'
 
   spec.add_runtime_dependency 'nokogiri', '~> 1.6', '>= 1.6.8'
