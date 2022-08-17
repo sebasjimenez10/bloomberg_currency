@@ -39,7 +39,7 @@ Gem::Specification.new do |spec|
   spec.add_development_dependency 'simplecov', '~> 0.11'
   spec.add_development_dependency 'rubocop', '~> 1.18.4'
   spec.add_development_dependency 'codeclimate-test-reporter', '~> 1.0', '>= 1.0.0'
-  spec.add_development_dependency 'pry-byebug', '~> 3.9.0'
+  spec.add_development_dependency 'pry-byebug', '~> 3.10.1'
   spec.add_development_dependency 'vcr', '~> 6.0.0'
   spec.add_development_dependency 'webmock', '~> 3.13.0'
 
