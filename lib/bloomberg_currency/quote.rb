@@ -17,5 +17,13 @@ module BC
     def success?
       success
     end
+
+    def delta
+      price - detail.previous_close
+    end
+
+    def delta_percent
+      (((price - detail.previous_close) / detail.previous_close) * 100).ceil(2)
+    end
   end
 end

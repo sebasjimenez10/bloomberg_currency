@@ -45,6 +45,4 @@ Gem::Specification.new do |spec|
   spec.add_development_dependency 'rubocop-rspec',             '~> 3.6.0'
   spec.add_development_dependency 'codeclimate-test-reporter', '~> 1.0'
   spec.add_development_dependency 'pry-byebug',                '~> 3.11'
-  spec.add_development_dependency 'vcr',                       '~> 6.3'
-  spec.add_development_dependency 'webmock',                   '~> 3.25'
 end

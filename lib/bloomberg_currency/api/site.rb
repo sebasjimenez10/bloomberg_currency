@@ -9,29 +9,27 @@ module BC
       CURRENT_PRICE_CONTAINER_XPATH = ".//div[contains(@class, 'currentPrice_')]"
       PRICE_TAG_XPATH               = ".//div[contains(@class, 'sized-price')]"
       LAST_UPDATED_AT_XPATH         = ".//time[contains(@class, 'timestamp_timeStamp')]"
-      SCRIPT_PATH                   = File.expand_path('../../../../bin/fetch.js', __FILE__)
 
-      def initialize(currency_one, currency_two)
+      attr_reader :site_loader
+
+      def initialize(currency_one, currency_two, site_loader = BC::API::SiteLoader)
         @currency_one = currency_one
         @currency_two = currency_two
-        @document     = load_site
+        @site_loader  = site_loader
       end
 
       def quote
+        @document = load_site(site_loader)
         build_quote(@document)
-      rescue
+      rescue BC::API::Errors::SiteLoadError
         { price: nil, last_updated_at: nil, detail: { prev_close: nil }, success: false }
       end
 
       private
 
-      def load_site
+      def load_site(site_loader)
         ticker = "#{@currency_one}#{@currency_two}:CUR"
-        output = `node #{SCRIPT_PATH} #{ticker}`
-
-        return Nokogiri::HTML(output) if $?.success?
-
-        raise "Failed to fetch ticker #{ticker}: #{output}"
+        site_loader.load_site(ticker)
       end
 
       def build_quote(document)
@@ -71,10 +69,10 @@ module BC
       def extract_prev_close(document)
         document
           .xpath(PREV_CLOSE_XPATH)
-          .last
           .children
           .map(&:text)
-          .last
+          .join
+          .match(/([\d,]+\.\d+)/)[1]
       end
     end
   end
