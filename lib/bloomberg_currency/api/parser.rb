@@ -6,7 +6,8 @@ module BC
     class Parser
       class << self
         def parse_price(price_str)
-          price_str.delete(',').to_f
+          raw_price_str = price_str.gsub(/[^\d.,\-]/, '')
+          raw_price_str.delete(',').to_f
         end
 
         def parse_datetime(datetime_str)

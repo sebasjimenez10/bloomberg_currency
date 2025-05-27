@@ -30,19 +30,21 @@ Gem::Specification.new do |spec|
   spec.executables   = spec.files.grep(%r{^exe/}) { |f| File.basename(f) }
   spec.require_paths = ['lib']
 
-  # Runtime dependencies (relaxed)
-  spec.add_runtime_dependency 'playwright-ruby-client'
-  spec.add_runtime_dependency 'faraday',  '~> 2.13'
-  spec.add_runtime_dependency 'nokogiri', '~> 1.18'
+  # Runtime dependencies
+  spec.add_runtime_dependency 'playwright-ruby-client', '~> 1.52'
+  spec.add_runtime_dependency 'faraday',                '~> 2.13'
+  spec.add_runtime_dependency 'nokogiri',               '~> 1.18'
 
-  # Development dependencies (relaxed)
-  spec.add_development_dependency 'bundler',                    '~> 2.6'
-  spec.add_development_dependency 'rake',                       '~> 13.2'
-  spec.add_development_dependency 'rspec',                      '~> 3.13'
-  spec.add_development_dependency 'simplecov',                  '~> 0.13.0'
-  spec.add_development_dependency 'rubocop',                    '~> 1.75'
+  # Development dependencies
+  spec.add_development_dependency 'bundler',                   '~> 2.6'
+  spec.add_development_dependency 'rake',                      '~> 13.2'
+  spec.add_development_dependency 'rspec',                     '~> 3.13'
+  spec.add_development_dependency 'simplecov',                 '~> 0.13.0'
+  spec.add_development_dependency 'rubocop',                   '~> 1.75'
+  spec.add_development_dependency 'rubocop-rake',              '~> 0.7.1'
+  spec.add_development_dependency 'rubocop-rspec',             '~> 3.6.0'
   spec.add_development_dependency 'codeclimate-test-reporter', '~> 1.0'
-  spec.add_development_dependency 'pry-byebug',                 '~> 3.11'
-  spec.add_development_dependency 'vcr',                        '~> 6.3'
-  spec.add_development_dependency 'webmock',                    '~> 3.25'
+  spec.add_development_dependency 'pry-byebug',                '~> 3.11'
+  spec.add_development_dependency 'vcr',                       '~> 6.3'
+  spec.add_development_dependency 'webmock',                   '~> 3.25'
 end

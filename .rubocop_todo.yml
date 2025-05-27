@@ -10,7 +10,7 @@
 # Cop supports --auto-correct.
 Layout/EmptyLineAfterMagicComment:
   Exclude:
-    - 'Gemfile'
+    - "Gemfile"
 
 # Offense count: 1
 # Configuration parameters: CountComments, ExcludedMethods.
@@ -20,6 +20,6 @@ Metrics/BlockLength:
 # Offense count: 1
 # Configuration parameters: ExpectMatchingDefinition, Regex, IgnoreExecutableScripts, AllowedAcronyms.
 # AllowedAcronyms: CLI, DSL, ACL, API, ASCII, CPU, CSS, DNS, EOF, GUID, HTML, HTTP, HTTPS, ID, IP, JSON, LHS, QPS, RAM, RHS, RPC, SLA, SMTP, SQL, SSH, TCP, TLS, TTL, UDP, UI, UID, UUID, URI, URL, UTF8, VM, XML, XMPP, XSRF, XSS
-Style/FileName:
+Naming/FileName:
   Exclude:
-    - 'Gemfile'
+    - "Gemfile"

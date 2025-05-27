@@ -17,7 +17,7 @@ if (!ticker) {
   // Load the page (don't wait for network to fully idle)
   // Allow dynamic content
   await page.goto(url);
-  await page.waitForTimeout(5000);
+  await page.waitForTimeout(3000);
 
   // Print full page HTML content
   const content = await page.content();
