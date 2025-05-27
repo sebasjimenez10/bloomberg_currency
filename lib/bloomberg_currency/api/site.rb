@@ -27,12 +27,12 @@ module BC
         end
 
         def extract_quote(document)
-          parse_quote(document)
+          build_quote(document)
         rescue
           { price: nil, last_updated_at: nil, success: false }
         end
 
-        def parse_quote(document)
+        def build_quote(document)
           price_container = document.xpath("//div[contains(@class, 'quotePageLayout_')]")
 
           price = parse_price(extract_price(price_container))

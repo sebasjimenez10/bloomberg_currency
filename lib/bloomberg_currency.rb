@@ -1,6 +1,5 @@
 # frozen_string_literal: true
 
-require 'faraday'
 require 'nokogiri'
 require 'bigdecimal'
 require 'date'
@@ -8,7 +7,6 @@ require 'date'
 require 'bloomberg_currency/version'
 require 'bloomberg_currency/api'
 require 'bloomberg_currency/api/site'
-require 'bloomberg_currency/api/host'
 require 'bloomberg_currency/quote'
 require 'bloomberg_currency/quote_detail'
 
