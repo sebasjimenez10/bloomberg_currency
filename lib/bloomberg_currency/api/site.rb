@@ -13,78 +13,56 @@ module BC
 
         def process(currency_one, currency_two)
           site = load_site(currency_one, currency_two)
-          parse(site)
+          extract_quote(site)
         end
 
         def load_site(currency_one, currency_two)
-          url = "#{BC::API::Host::URL}#{currency_one}#{currency_two}:CUR"
-          headers = {
-            'user-agent' => BC::API::USER_AGENT,
-            'referer' => 'https://www.google.com/'
-          }
-          file = Faraday.get(url, nil, headers)
+          ticker = "#{currency_one}#{currency_two}:CUR"
+          script_path = File.expand_path('../../../../bin/fetch.js', __FILE__)
+          output = `node #{script_path} #{ticker}`
 
-          Nokogiri::HTML(file.body)
+          return Nokogiri::HTML(output) if $?.success?
+
+          raise "Failed to fetch ticker #{ticker}: #{output}"
         end
 
-        def parse(document)
+        def extract_quote(document)
           parse_quote(document)
         rescue
-          { price: nil, datetime: nil, detail: nil, available: false }
+          { price: nil, last_updated_at: nil, success: false }
         end
 
         def parse_quote(document)
-          price_container          = document.xpath("//section[contains(@class, 'quotePageSnapshot')]")
-          detailed_quote_container = document.xpath("//div[contains(@class, 'details__')]")
-          price_element            = price_container.xpath("//span[starts-with(@class, 'priceText__')]")
-          price_datetime_element   = price_container.xpath("//div[contains(@class, 'time__')]")
-          price                    = price_element.text.strip.tr(',', '').to_f
-          datetime                 = calculate_datetime(price_datetime_element.children.first.text.strip)
-          details_hash             = quote_details(detailed_quote_container)
+          price_container = document.xpath("//div[contains(@class, 'quotePageLayout_')]")
 
-          { price: price, datetime: datetime, detail: BC::QuoteDetail.new(details_hash), available: true }
+          price = parse_price(extract_price(price_container))
+          datetime = parse_datetime(extract_datetime(price_container))
+
+          { price: price, last_updated_at: datetime, success: true }
         end
 
-        def quote_details(container)
-          open_price = extract_value_from_detail(container, 'openprice')
-          previous_close = extract_value_from_detail(container, 'previousclosingpriceonetradingdayago')
-          total_return_ytd = extract_value_from_detail(container, 'totalreturnytd')
-          range_one_day = extract_values_for_range(container, 'rangeoneday')
-          range_52_weeks = extract_values_for_range(container, 'range52weeks')
-
-          {
-            open: open_price,
-            day_range: range_one_day,
-            previous_close: previous_close,
-            range_52_wks: range_52_weeks,
-            ytd_return: total_return_ytd
-          }
-        end
-
-        def extract_value_from_detail(container, section)
-          container
-            .xpath("//section[contains(@class, '#{section}')]")
-            .children[1].text
-        end
-
-        def extract_values_for_range(container, section)
-          container
-            .xpath("//section[contains(@class, '#{section}')]")
-            .children[1]
-            .children[0]
+        def extract_price(price_container)
+          price_container
+            .xpath(".//div[contains(@class, 'currentPrice_')]")
+            .xpath(".//div[contains(@class, 'sized-price')]")
             .children
-            .map(&:text)
-            .join('-')
+            .map(&:to_s)
+            .join
         end
 
-        def calculate_datetime(datetime_str)
-          if datetime_str.index(':')
-            ::DateTime.strptime(datetime_str, 'As of %H:%M %p %z %m/%d/%Y')
-          else
-            ::DateTime.strptime(datetime_str, 'As of %m/%d/%Y').to_date
-          end
-        rescue
-          ''
+        def extract_datetime(price_container)
+          price_container
+            .xpath(".//time[contains(@class, 'timestamp_timeStamp')]")
+            .children
+            .to_s
+        end
+
+        def parse_price(price_str)
+          price_str.delete(',').to_f
+        end
+
+        def parse_datetime(datetime_str)
+          ::DateTime.strptime(datetime_str, '%I:%M %p %Z %m/%d/%y')
         end
       end
     end

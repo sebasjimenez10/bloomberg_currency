@@ -15,3 +15,4 @@ codeclimate-coverage-reporter.sh
 */**/.DS_Store
 
 /.byebug_history
+/node_modules/
