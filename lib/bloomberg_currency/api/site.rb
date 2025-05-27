@@ -6,15 +6,11 @@ module BC
     class Site
       class << self
         def quote(currency_one, currency_two)
-          process(currency_one, currency_two)
-        end
-
-        private
-
-        def process(currency_one, currency_two)
           site = load_site(currency_one, currency_two)
           extract_quote(site)
         end
+
+        private
 
         def load_site(currency_one, currency_two)
           ticker = "#{currency_one}#{currency_two}:CUR"
@@ -33,12 +29,20 @@ module BC
         end
 
         def build_quote(document)
-          price_container = document.xpath("//div[contains(@class, 'quotePageLayout_')]")
+          # Extract values from nodes
+          price_container = extract_price_container(document)
+          price_str       = extract_price(price_container)
+          datetime_str    = extract_datetime(price_container)
 
-          price = parse_price(extract_price(price_container))
-          datetime = parse_datetime(extract_datetime(price_container))
+          # Parse extracted values
+          price           = BC::API::Parser.parse_price(price_str)
+          datetime        = BC::API::Parser.parse_datetime(datetime_str)
 
           { price: price, last_updated_at: datetime, success: true }
+        end
+
+        def extract_price_container(document)
+          document.xpath("//div[contains(@class, 'quotePageLayout_')]")
         end
 
         def extract_price(price_container)
@@ -46,8 +50,7 @@ module BC
             .xpath(".//div[contains(@class, 'currentPrice_')]")
             .xpath(".//div[contains(@class, 'sized-price')]")
             .children
-            .map(&:to_s)
-            .join
+            .to_s
         end
 
         def extract_datetime(price_container)
@@ -55,14 +58,6 @@ module BC
             .xpath(".//time[contains(@class, 'timestamp_timeStamp')]")
             .children
             .to_s
-        end
-
-        def parse_price(price_str)
-          price_str.delete(',').to_f
-        end
-
-        def parse_datetime(datetime_str)
-          ::DateTime.strptime(datetime_str, '%I:%M %p %Z %m/%d/%y')
         end
       end
     end

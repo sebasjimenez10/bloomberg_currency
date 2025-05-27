@@ -7,6 +7,7 @@ require 'date'
 require 'bloomberg_currency/version'
 require 'bloomberg_currency/api'
 require 'bloomberg_currency/api/site'
+require 'bloomberg_currency/api/parser'
 require 'bloomberg_currency/quote'
 require 'bloomberg_currency/quote_detail'
 
