@@ -38,58 +38,60 @@ _NOTE_: From version `1.1.2` to `2.0.0` there are mayor breaking changes. Please
 _NOTE_: From version `0.1.0` to `1.0.0` there are mayor breaking changes. Please make sure you read the docs before installing/upgrading to the newest version.
 
 ```
-quote = BC::Quote.new('USD', 'EUR')
+quote = BC::Quote.new(currency_one: 'USD', currency_two: 'COP')
 =>
-=>
-#<BC::Quote:0x000000012069dd60
- @detail=#<BC::QuoteDetail:0x00000001201f2c20 @previous_close=4150.7>,
- @last_updated_at=#<DateTime: 2025-05-27T00:00:00-04:00 ((2460823j,14400s,0n),-14400s,2299161j)>,
- @price=4113.85,
- @quote=
-  {:price=>4113.85, :last_updated_at=>#<DateTime: 2025-05-27T00:00:00-04:00 ((2460823j,14400s,0n),-14400s,2299161j)>, :detail=>{:prev_close=>4150.7}, :success=>true},
- @site=#<BC::API::Site:0x0000000120639a18 @currency_one="USD", @currency_two="COP", @site_loader=BC::API::SiteLoader>,
- @success=true>
+#<BC::Quote:0x0000000122256368
+ @delta=18.36,
+ @delta_percent=0.4462999999523163,
+ @detail=#<BC::QuoteDetail:0x0000000122178db0 @day_range=4112.38..4136.93, @fifty_two_week_range=3843.94..4545.83, @high=4136.93, @low=4112.38, @open=4120.68, @previous_close=4113.85, @total_return_ytd=-6.21>,
+ @last_updated_at=#<DateTime: 2025-05-28T16:45:27+00:00 ((2460824j,60327s,0n),+0s,2299161j)>,
+ @name="USDCOP Spot Exchange Rate - Price of 1 USD in COP",
+ @price=4132.21>
 
 quote.detail
-=> #<BC::QuoteDetail:0x000000011dcd5de8 @previous_close=0.8827>
+=> #<BC::QuoteDetail:0x0000000122178db0 @day_range=4112.38..4136.93, @fifty_two_week_range=3843.94..4545.83, @high=4136.93, @low=4112.38, @open=4120.68, @previous_close=4113.85, @total_return_ytd=-6.21>
 ```
 
-Then the quote object offers a few accessor methods:
+The `BC::Quote` quote object offers the following accessor methods:
 
-- `price`: Returns a float price
-- `last_updated_at`: Returns the date time when the price was last updated
-- `detail`: Returns an object of the class BC::QuoteDetail which encapsulate the details of the quote.
-- `success?`: Returns true or false if the quote was successful or not.
-- `delta`: Returns the difference between current price and previous close price.
-- `delta_percent`: Returns the percentage difference between current price and previous close price.
+- `name` - The name of the currency or financial instrument.
+- `detail` - Additional details or description about the currency or instrument.
+- `price` - The current price or value.
+- `delta` - The absolute change in price since the last update.
+- `delta_percent` - The percentage change in price since the last update.
+- `last_updated_at` - The timestamp indicating when the data was last updated.
 
-The `BC::QuoteDetail` class offers the following methods:
+The `BC::QuoteDetail` detail object offers the following accessor methods:
 
-- `previous_close`: Returns the value where the exchange closed last day.
+- `previous_close` - The previous closing price (Float)
+- `low` - The lowest price of the day (Float)
+- `high` - The highest price of the day (Float)
+- `open` - The opening price (Float)
+- `day_range` - The price range for the day (Range)
+- `fifty_two_week_range` - The 52-week price range (Range)
+- `total_return_ytd` - The total return year-to-date (Float)
+
+The rest of the classes are intended for internal use and should not be used outside of the `BC::Quote` implementation.
 
 ## Examples
 
-Getting information about the USD and EUR exchange:
+Getting information about the USD and COP exchange:
 
 ```
-quote = BC::Quote.new('USD', 'EUR')
-quote.price
-=> 0.8147
+quote = BC::Quote.new(currency_one: 'USD', currency_two: 'COP')
+=>
+#<BC::Quote:0x0000000122256368
+ @delta=18.36,
+ @delta_percent=0.4462999999523163,
+ @detail=#<BC::QuoteDetail:0x0000000122178db0 @day_range=4112.38..4136.93, @fifty_two_week_range=3843.94..4545.83, @high=4136.93, @low=4112.38, @open=4120.68, @previous_close=4113.85, @total_return_ytd=-6.21>,
+ @last_updated_at=#<DateTime: 2025-05-28T16:45:27+00:00 ((2460824j,60327s,0n),+0s,2299161j)>,
+ @name="USDCOP Spot Exchange Rate - Price of 1 USD in COP",
+ @price=4132.21>
 
-quote.last_updated_at
-=> #<DateTime: 2025-05-28T06:38:00-04:00 ((2460824j,38280s,0n),-14400s,2299161j)>
+# Inspect the quote detail
 
 quote.detail
-=> #<BC::QuoteDetail:0x000000011dcd5de8 @previous_close=0.8827>
-
-quote.success?
-=> true
-
-quote.delta
-=> -0.0
-
-quote.delta_percent
-=> -0.05
+=> #<BC::QuoteDetail:0x0000000122178db0 @day_range=4112.38..4136.93, @fifty_two_week_range=3843.94..4545.83, @high=4136.93, @low=4112.38, @open=4120.68, @previous_close=4113.85, @total_return_ytd=-6.21>
 ```
 
 ## Development

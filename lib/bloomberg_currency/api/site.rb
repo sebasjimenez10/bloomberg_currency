@@ -1,14 +1,40 @@
 # frozen_string_literal: true
 
+# Implements scraping of currency quote data from a site using a provided site loader.
+#
+# @example
+#   site = BC::API::Site.new("USD", "EUR")
+#   quote = site.quote
+#
+# @attr_reader [Object] site_loader The loader responsible for fetching site data.
+#
+# @!attribute [r] site_loader
+#   @return [Object] the site loader used to fetch the site data.
+#
+# @param currency_one [String] The base currency code (e.g., "USD").
+# @param currency_two [String] The quote currency code (e.g., "EUR").
+# @param site_loader [Object] The loader class/module used to fetch the site (default: BC::API::SiteLoader).
+#
+# @method quote
+#   Fetches and parses the quote data for the given currency pair.
+#   @return [Hash, nil] The parsed quote data as a hash, or nil if not found.
+#
+# @!visibility private
+# @method load_site(site_loader)
+#   Loads the site for the currency pair using the provided site loader.
+#   @param site_loader [Object] The loader to use for fetching the site.
+#   @return [Object] The loaded site document.
+#
+# @method build_quote_hash(document)
+#   Extracts and parses the quote JSON from the loaded site document.
+#   @param document [Object] The loaded site document.
+#   @return [Hash, nil] The parsed quote data as a hash, or nil if not found.
+
 module BC
   module API
     # Implements site scrapping
     class Site
-      PREV_CLOSE_XPATH              = "//div[contains(@class, 'media-ui-SnapshotChart_prevCloseContainer')]"
-      PRICE_CONTAINER_XPATH         = "//div[contains(@class, 'quotePageLayout_')]"
-      CURRENT_PRICE_CONTAINER_XPATH = ".//div[contains(@class, 'currentPrice_')]"
-      PRICE_TAG_XPATH               = ".//div[contains(@class, 'sized-price')]"
-      LAST_UPDATED_AT_XPATH         = ".//time[contains(@class, 'timestamp_timeStamp')]"
+      JSON_QUOTE_XPATH = "//script[@id='__NEXT_DATA__']"
 
       attr_reader :site_loader
 
@@ -20,9 +46,7 @@ module BC
 
       def quote
         document = load_site(site_loader)
-        build_quote(document)
-      rescue BC::API::Errors::SiteLoadError
-        { price: nil, last_updated_at: nil, detail: { prev_close: nil }, success: false }
+        build_quote_hash(document)
       end
 
       private
@@ -32,47 +56,10 @@ module BC
         site_loader.load_site(ticker)
       end
 
-      def build_quote(document)
-        # Extract values from nodes
-        price_container = extract_price_container(document)
-        price_str       = extract_price(price_container)
-        datetime_str    = extract_datetime(price_container)
-        prev_close_str  = extract_prev_close(document)
-
-        # Parse extracted values
-        price      = BC::API::Parser.parse_price(price_str)
-        prev_price = BC::API::Parser.parse_price(prev_close_str)
-        datetime   = BC::API::Parser.parse_datetime(datetime_str)
-
-        { price: price, last_updated_at: datetime, detail: { prev_close: prev_price }, success: true }
-      end
-
-      def extract_price_container(document)
-        document.xpath(PRICE_CONTAINER_XPATH)
-      end
-
-      def extract_price(price_container)
-        price_container
-          .xpath(CURRENT_PRICE_CONTAINER_XPATH)
-          .xpath(PRICE_TAG_XPATH)
-          .children
-          .to_s
-      end
-
-      def extract_datetime(price_container)
-        price_container
-          .xpath(LAST_UPDATED_AT_XPATH)
-          .children
-          .to_s
-      end
-
-      def extract_prev_close(document)
-        document
-          .xpath(PREV_CLOSE_XPATH)
-          .children
-          .map(&:text)
-          .join
-          .match(/([\d,]+\.\d+)/)[1]
+      def build_quote_hash(document)
+        json_tag = document.xpath(JSON_QUOTE_XPATH)
+        json_quote = JSON.parse(json_tag.text.strip).dig("props", "pageProps", "quote")
+        json_quote
       end
     end
   end

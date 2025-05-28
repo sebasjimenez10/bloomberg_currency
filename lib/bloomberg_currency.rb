@@ -4,6 +4,7 @@ require 'nokogiri'
 require 'open3'
 require 'bigdecimal'
 require 'date'
+require 'json'
 
 require 'bloomberg_currency/version'
 require 'bloomberg_currency/api'
