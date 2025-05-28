@@ -1,7 +1,6 @@
 # Bloomberg Currency
 
 [![Build Status](https://github.com/sebasjimenez10/bloomberg_currency/actions/workflows/ci.yml/badge.svg)](https://github.com/sebasjimenez10/bloomberg_currency/actions/workflows/ci.yml)
-[![Test Coverage](https://codeclimate.com/github/sebasjimenez10/bloomberg_currency/badges/coverage.svg)](https://codeclimate.com/github/sebasjimenez10/bloomberg_currency/coverage)
 [![Gem Version](https://badge.fury.io/rb/bloomberg_currency.svg)](https://badge.fury.io/rb/bloomberg_currency)
 
 Bloomberg Currency provides an easy-to-use API to pull currency exchange rates from the Bloomberg site. If you would like to test out this gem before including it into your project, feel free to clone it, bundle it and run `bin/console` for an interactive prompt.
@@ -16,11 +15,21 @@ gem 'bloomberg_currency'
 
 And then execute:
 
-    $ bundle
+```
+$ bundle
+```
 
 Or install it yourself as:
 
-    $ gem install bloomberg_currency
+```
+$ gem install bloomberg_currency
+```
+
+## Lastest changes
+
+Version `2.0.0` uses Playwright to spin up a headfull chromium browser to load the page content to bypass robot checks. The browser session lasts about ~3 secs. It is recommended to cache results for at least 1 min to prevent being flagged by Bloombergs site.
+
+A `fetch.js` script has been added to `bin`. This script is called from ruby to load the site.
 
 ## Usage
 
@@ -31,13 +40,15 @@ _NOTE_: From version `0.1.0` to `1.0.0` there are mayor breaking changes. Please
 ```
 quote = BC::Quote.new('USD', 'EUR')
 =>
-#<BC::Quote:0x000000011bee6a08
- @detail=#<BC::QuoteDetail:0x000000011dcd5de8 @previous_close=0.8827>,
- @last_updated_at=#<DateTime: 2025-05-28T06:38:00-04:00 ((2460824j,38280s,0n),-14400s,2299161j)>,
- @price=0.8822,
+=>
+#<BC::Quote:0x000000012069dd60
+ @detail=#<BC::QuoteDetail:0x00000001201f2c20 @previous_close=4150.7>,
+ @last_updated_at=#<DateTime: 2025-05-27T00:00:00-04:00 ((2460823j,14400s,0n),-14400s,2299161j)>,
+ @price=4113.85,
  @quote=
-  {:price=>0.8822, :last_updated_at=>#<DateTime: 2025-05-28T06:38:00-04:00 ((2460824j,38280s,0n),-14400s,2299161j)>, :detail=>{:prev_close=>0.8827}, :success=>true},
-  ...
+  {:price=>4113.85, :last_updated_at=>#<DateTime: 2025-05-27T00:00:00-04:00 ((2460823j,14400s,0n),-14400s,2299161j)>, :detail=>{:prev_close=>4150.7}, :success=>true},
+ @site=#<BC::API::Site:0x0000000120639a18 @currency_one="USD", @currency_two="COP", @site_loader=BC::API::SiteLoader>,
+ @success=true>
 
 quote.detail
 => #<BC::QuoteDetail:0x000000011dcd5de8 @previous_close=0.8827>

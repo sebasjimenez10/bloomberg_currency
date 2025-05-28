@@ -19,8 +19,8 @@ module BC
       end
 
       def quote
-        @document = load_site(site_loader)
-        build_quote(@document)
+        document = load_site(site_loader)
+        build_quote(document)
       rescue BC::API::Errors::SiteLoadError
         { price: nil, last_updated_at: nil, detail: { prev_close: nil }, success: false }
       end
