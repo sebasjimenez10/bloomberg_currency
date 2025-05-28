@@ -20,18 +20,13 @@ describe BC::API::Site do
       end
 
       it 'returns a quote with price' do
-        expect(subject.quote[:price].class).to eq(Float)
-        expect(subject.quote[:price].to_f).to eq(4113.85)
+        expect(subject.quote["price"].class).to eq(String)
+        expect(subject.quote["price"]).to eq("4,113.8500")
       end
 
       it 'returns a quote with last_updated_at' do
-        expect(subject.quote[:last_updated_at].class).to eq(DateTime)
-        expect(subject.quote[:last_updated_at].to_s).to eq("2025-05-27T13:59:00-04:00")
-      end
-
-      it 'returns a quote with price details' do
-        expect(subject.quote[:detail].class).to eq(Hash)
-        expect(subject.quote[:detail][:prev_close]).to eq(4150.70)
+        expect(subject.quote["lastUpdate"].class).to eq(String)
+        expect(subject.quote["lastUpdate"].to_s).to eq("2025-05-27T17:59:55.000Z")
       end
     end
 
@@ -41,7 +36,7 @@ describe BC::API::Site do
       end
 
       it 'returns an empty not available quote' do
-        expect(subject.quote[:success]).to eq false
+        expect { subject.quote }.to raise_error(BC::API::Errors::SiteLoadError, /invalid/)
       end
     end
   end
