@@ -1,91 +1,65 @@
 # frozen_string_literal: true
 
+# Implements scraping of currency quote data from a site using a provided site loader.
+#
+# @example
+#   site = BC::API::Site.new("USD", "EUR")
+#   quote = site.quote
+#
+# @attr_reader [Object] site_loader The loader responsible for fetching site data.
+#
+# @!attribute [r] site_loader
+#   @return [Object] the site loader used to fetch the site data.
+#
+# @param currency_one [String] The base currency code (e.g., "USD").
+# @param currency_two [String] The quote currency code (e.g., "EUR").
+# @param site_loader [Object] The loader class/module used to fetch the site (default: BC::API::SiteLoader).
+#
+# @method quote
+#   Fetches and parses the quote data for the given currency pair.
+#   @return [Hash, nil] The parsed quote data as a hash, or nil if not found.
+#
+# @!visibility private
+# @method load_site(site_loader)
+#   Loads the site for the currency pair using the provided site loader.
+#   @param site_loader [Object] The loader to use for fetching the site.
+#   @return [Object] The loaded site document.
+#
+# @method build_quote_hash(document)
+#   Extracts and parses the quote JSON from the loaded site document.
+#   @param document [Object] The loaded site document.
+#   @return [Hash, nil] The parsed quote data as a hash, or nil if not found.
+
 module BC
   module API
     # Implements site scrapping
     class Site
-      class << self
-        def quote(currency_one, currency_two)
-          process(currency_one, currency_two)
-        end
+      JSON_QUOTE_XPATH = "//script[@id='__NEXT_DATA__']"
 
-        private
+      attr_reader :site_loader
 
-        def process(currency_one, currency_two)
-          site = load_site(currency_one, currency_two)
-          parse(site)
-        end
+      def initialize(currency_one, currency_two, site_loader = BC::API::SiteLoader)
+        @currency_one = currency_one
+        @currency_two = currency_two
+        @site_loader  = site_loader
+      end
 
-        def load_site(currency_one, currency_two)
-          url = "#{BC::API::Host::URL}#{currency_one}#{currency_two}:CUR"
-          headers = {
-            'user-agent' => BC::API::USER_AGENT,
-            'referer' => 'https://www.google.com/'
-          }
-          file = Faraday.get(url, nil, headers)
+      def quote
+        document = load_site(site_loader)
+        build_quote_hash(document)
+      end
 
-          Nokogiri::HTML(file.body)
-        end
+      private
 
-        def parse(document)
-          parse_quote(document)
-        rescue
-          { price: nil, datetime: nil, detail: nil, available: false }
-        end
+      def load_site(site_loader)
+        ticker = "#{@currency_one}#{@currency_two}:CUR"
+        site_loader.load_site(ticker)
+      end
 
-        def parse_quote(document)
-          price_container          = document.xpath("//section[contains(@class, 'quotePageSnapshot')]")
-          detailed_quote_container = document.xpath("//div[contains(@class, 'details__')]")
-          price_element            = price_container.xpath("//span[starts-with(@class, 'priceText__')]")
-          price_datetime_element   = price_container.xpath("//div[contains(@class, 'time__')]")
-          price                    = price_element.text.strip.tr(',', '').to_f
-          datetime                 = calculate_datetime(price_datetime_element.children.first.text.strip)
-          details_hash             = quote_details(detailed_quote_container)
-
-          { price: price, datetime: datetime, detail: BC::QuoteDetail.new(details_hash), available: true }
-        end
-
-        def quote_details(container)
-          open_price = extract_value_from_detail(container, 'openprice')
-          previous_close = extract_value_from_detail(container, 'previousclosingpriceonetradingdayago')
-          total_return_ytd = extract_value_from_detail(container, 'totalreturnytd')
-          range_one_day = extract_values_for_range(container, 'rangeoneday')
-          range_52_weeks = extract_values_for_range(container, 'range52weeks')
-
-          {
-            open: open_price,
-            day_range: range_one_day,
-            previous_close: previous_close,
-            range_52_wks: range_52_weeks,
-            ytd_return: total_return_ytd
-          }
-        end
-
-        def extract_value_from_detail(container, section)
-          container
-            .xpath("//section[contains(@class, '#{section}')]")
-            .children[1].text
-        end
-
-        def extract_values_for_range(container, section)
-          container
-            .xpath("//section[contains(@class, '#{section}')]")
-            .children[1]
-            .children[0]
-            .children
-            .map(&:text)
-            .join('-')
-        end
-
-        def calculate_datetime(datetime_str)
-          if datetime_str.index(':')
-            ::DateTime.strptime(datetime_str, 'As of %H:%M %p %z %m/%d/%Y')
-          else
-            ::DateTime.strptime(datetime_str, 'As of %m/%d/%Y').to_date
-          end
-        rescue
-          ''
-        end
+      def build_quote_hash(document)
+        json_tag = document.xpath(JSON_QUOTE_XPATH)
+        json_quote = JSON.parse(json_tag.text.strip).dig("props", "pageProps", "quote")
+        json_quote
       end
     end
   end

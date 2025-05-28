@@ -2,8 +2,9 @@
 
 module BC
   module API
-    class Host
-      URL = 'https://www.bloomberg.com/quote/'.freeze
+    module Errors
+      class SiteLoadError < StandardError
+      end
     end
   end
 end

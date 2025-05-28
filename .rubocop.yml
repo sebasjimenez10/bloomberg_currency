@@ -3,18 +3,18 @@ inherit_from: .rubocop_todo.yml
 AllCops:
   NewCops: enable
   Include:
-    - '**/Rakefile'
-    - '**/config.ru'
+    - "**/Rakefile"
+    - "**/config.ru"
   Exclude:
     - bloomberg_currency.gemspec
-    - 'db/**/*'
-    - 'config/**/*'
-    - 'script/**/*'
-    - 'spec/**/*'
-    - 'bin/**/*'
+    - "db/**/*"
+    - "config/**/*"
+    - "script/**/*"
+    - "spec/**/*"
+    - "bin/**/*"
     - !ruby/regexp /old_and_unused\.rb$/
 
-Metrics/LineLength:
+Layout/LineLength:
   Max: 120
 
 Metrics/MethodLength:

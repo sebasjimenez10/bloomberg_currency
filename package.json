@@ -1,0 +1,12 @@
+{
+  "name": "bloomberg_currency_helper",
+  "version": "1.0.0",
+  "main": "bin/fetch.js",
+  "scripts": {
+    "fetch": "node bin/fetch.js"
+  },
+  "dependencies": {
+    "playwright": "^1.44.0",
+    "playwright-extra": "^4.3.1"
+  }
+}

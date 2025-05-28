@@ -9,40 +9,39 @@ Gem::Specification.new do |spec|
   spec.name          = 'bloomberg_currency'
   spec.version       = BC::VERSION
   spec.authors       = ['Sebastian Jimenez Velez']
-  spec.email         = ['sebasjimenezv@gmail.com']
+  spec.email         = ['sebastian@rocktlab.com']
 
   spec.summary       = 'Bloomberg Currency helps you pull currency rates data from the Bloomberg website'
   spec.description   = 'Provides an easy to use API to get currency rates data from the Bloomberg website'
   spec.homepage      = 'https://github.com/sebasjimenez10/bloomberg_currency'
   spec.license       = 'MIT'
 
-  # Prevent pushing this gem to RubyGems.org. To allow pushes either set the 'allowed_push_host'
-  # to allow pushing to a single host or delete this section to allow pushing to any host.
   if spec.respond_to?(:metadata)
     spec.metadata['allowed_push_host'] = 'https://rubygems.org'
   else
-    raise 'RubyGems 2.0 or newer is required to protect against ' \
-      'public gem pushes.'
+    raise 'RubyGems 2.0 or newer is required to protect against public gem pushes.'
   end
 
   spec.files = `git ls-files -z`.split("\x0").reject do |f|
     f.match(%r{^(test|spec|features)/})
   end
 
-  spec.bindir        = 'exe'
+  spec.bindir        = 'bin'
   spec.executables   = spec.files.grep(%r{^exe/}) { |f| File.basename(f) }
   spec.require_paths = ['lib']
 
-  spec.add_development_dependency 'bundler', '~> 2.2'
-  spec.add_development_dependency 'rake', '>= 12.3.3'
-  spec.add_development_dependency 'rspec', '~> 3.0'
-  spec.add_development_dependency 'simplecov', '~> 0.11'
-  spec.add_development_dependency 'rubocop', '~> 1.18.4'
-  spec.add_development_dependency 'codeclimate-test-reporter', '~> 1.0', '>= 1.0.0'
-  spec.add_development_dependency 'pry-byebug', '~> 3.9.0'
-  spec.add_development_dependency 'vcr', '~> 6.0.0'
-  spec.add_development_dependency 'webmock', '~> 3.13.0'
+  # Runtime dependencies
+  spec.add_runtime_dependency 'bigdecimal'
+  spec.add_runtime_dependency 'faraday',  '~> 2.13'
+  spec.add_runtime_dependency 'nokogiri', '~> 1.18'
 
-  spec.add_runtime_dependency 'nokogiri', '~> 1.6', '>= 1.6.8'
-  spec.add_runtime_dependency 'faraday', '>= 0.9.2', '< 1.7.0'
+  # Development dependencies
+  spec.add_development_dependency 'bundler',       '~> 2.6'
+  spec.add_development_dependency 'rake',          '~> 13.2'
+  spec.add_development_dependency 'rspec',         '~> 3.13'
+  spec.add_development_dependency 'simplecov',     '~> 0.13.0'
+  spec.add_development_dependency 'rubocop',       '~> 1.75'
+  spec.add_development_dependency 'rubocop-rake',  '~> 0.7.1'
+  spec.add_development_dependency 'rubocop-rspec', '~> 3.6.0'
+  spec.add_development_dependency 'pry-byebug',    '~> 3.11'
 end
