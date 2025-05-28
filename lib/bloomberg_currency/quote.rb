@@ -19,7 +19,7 @@ module BC
     end
 
     def delta
-      price - detail.previous_close
+      (price - detail.previous_close).ceil(2)
     end
 
     def delta_percent

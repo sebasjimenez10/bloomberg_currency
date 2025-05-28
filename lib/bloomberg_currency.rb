@@ -1,6 +1,7 @@
 # frozen_string_literal: true
 
 require 'nokogiri'
+require 'open3'
 require 'bigdecimal'
 require 'date'
 

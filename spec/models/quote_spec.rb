@@ -38,4 +38,16 @@ describe BC::Quote do
   it 'defines success?' do
     expect(subject.respond_to?(:success)).to be true
   end
+
+  it 'returns success' do
+    expect(subject.success?).to be true
+  end
+
+  it 'returns price delta' do
+    expect(subject.delta).to eq -36.84
+  end
+
+  it 'returns price delta percentage' do
+    expect(subject.delta_percent).to eq -0.88
+  end
 end
